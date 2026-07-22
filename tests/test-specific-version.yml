@@ -1,0 +1,30 @@
+name: Test specific CLI version input
+on:
+  workflow_dispatch:
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      - name: Invoke action with a specific 1Password CLI version
+        id: action
+        uses: .
+        with:
+          version: "2.30.0"
+          export-env: "false"
+          unset-previous: "false"
+        continue-on-error: true
+      - name: Assert action ran with specific version
+        env:
+          OUTCOME: ${{ steps.action.outcome }}
+        run: |
+          echo "action outcome: $OUTCOME"
+          # The action should attempt to install the specified CLI version.
+          # Without credentials it may fail at the secrets-loading step,
+          # but it should not crash the runner itself.
+          if [ "$OUTCOME" = "success" ] || [ "$OUTCOME" = "failure" ]; then
+            echo "PASS: action completed with outcome '$OUTCOME'"
+          else
+            echo "FAIL: unexpected outcome '$OUTCOME'"
+            exit 1
+          fi

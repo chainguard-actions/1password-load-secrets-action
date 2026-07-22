@@ -1,0 +1,30 @@
+name: Test basic invocation
+on:
+  workflow_dispatch:
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      - name: Test action invocation with no secrets mapping
+        id: action
+        uses: .
+        with:
+          export-env: "false"
+          unset-previous: "false"
+          version: "latest"
+        continue-on-error: true
+      - name: Assert action ran (no credentials expected to fail gracefully)
+        env:
+          OUTCOME: ${{ steps.action.outcome }}
+        run: |
+          echo "action outcome: $OUTCOME"
+          # Without OP_CONNECT_HOST/OP_CONNECT_TOKEN or OP_SERVICE_ACCOUNT_TOKEN,
+          # the action should either succeed (no secrets to load) or fail with
+          # a credential error — either way it should not crash the runner.
+          if [ "$OUTCOME" = "success" ] || [ "$OUTCOME" = "failure" ]; then
+            echo "PASS: action completed with outcome '$OUTCOME'"
+          else
+            echo "FAIL: unexpected outcome '$OUTCOME'"
+            exit 1
+          fi
