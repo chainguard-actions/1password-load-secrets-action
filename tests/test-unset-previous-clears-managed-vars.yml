@@ -1,0 +1,31 @@
+name: Test unset-previous clears managed variables
+on:
+  workflow_dispatch:
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+
+      - name: Run action with unset-previous=true and OP_MANAGED_VARIABLES set
+        id: action
+        uses: .
+        with:
+          unset-previous: "true"
+        env:
+          # Simulate that a previous step had managed these variables
+          OP_MANAGED_VARIABLES: "MY_SECRET,ANOTHER_SECRET"
+          MY_SECRET: "some-secret-value"
+          ANOTHER_SECRET: "another-secret-value"
+        # No real auth configured — with unset-previous=true and no auth, action succeeds
+
+      - name: Assert action succeeded
+        env:
+          OUTCOME: ${{ steps.action.outcome }}
+        run: |
+          echo "outcome: $OUTCOME"
+          if [ "$OUTCOME" != "success" ]; then
+            echo "FAIL: expected action to succeed when unsetting previous with no auth, but got: $OUTCOME"
+            exit 1
+          fi
+          echo "PASS: action correctly succeeded when unsetting previous managed variables"

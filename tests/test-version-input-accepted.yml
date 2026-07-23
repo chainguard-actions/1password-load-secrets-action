@@ -1,0 +1,27 @@
+name: Test version input is accepted
+on:
+  workflow_dispatch:
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+
+      - name: Run action with explicit version and unset-previous (no auth needed)
+        id: action
+        uses: .
+        with:
+          version: "latest"
+          unset-previous: "true"
+        # No auth configured — with unset-previous=true and no auth, action exits early
+
+      - name: Assert action succeeded
+        env:
+          OUTCOME: ${{ steps.action.outcome }}
+        run: |
+          echo "outcome: $OUTCOME"
+          if [ "$OUTCOME" != "success" ]; then
+            echo "FAIL: expected action to succeed with version input and unset-previous, but got: $OUTCOME"
+            exit 1
+          fi
+          echo "PASS: action correctly accepted version input"

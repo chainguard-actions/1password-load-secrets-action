@@ -1,0 +1,21 @@
+name: Test unset-previous with no auth configured
+on:
+  workflow_dispatch:
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+
+      - name: Run action with unset-previous and no auth
+        id: action
+        uses: .
+        with:
+          unset-previous: "true"
+        # No OP_SERVICE_ACCOUNT_TOKEN, OP_CONNECT_HOST/TOKEN, or Workload Identity vars set
+        # The action should succeed and log that no auth is configured
+
+      - name: Assert action succeeded
+        run: |
+          echo "Action completed without error (unset-previous with no auth is a valid no-op)"
+          echo "PASS"
