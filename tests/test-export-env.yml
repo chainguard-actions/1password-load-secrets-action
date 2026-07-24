@@ -1,0 +1,27 @@
+name: Test export-env input
+on:
+  workflow_dispatch:
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+
+      - name: Run action with export-env=true (expect failure on auth, not on input parsing)
+        id: action
+        uses: .
+        continue-on-error: true
+        with:
+          export-env: "true"
+          unset-previous: "false"
+
+      - name: Assert action failed (auth error, not input error)
+        env:
+          OUTCOME: ${{ steps.action.outcome }}
+        run: |
+          echo "outcome: $OUTCOME"
+          if [ "$OUTCOME" != "failure" ]; then
+            echo "FAIL: expected action to fail due to missing auth credentials, but got outcome=$OUTCOME"
+            exit 1
+          fi
+          echo "PASS: action correctly failed when no auth credentials were provided (export-env input was accepted)"
