@@ -1,0 +1,31 @@
+name: Test conflicting authentication configuration error
+on:
+  workflow_dispatch:
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      - name: Run action with conflicting Workload Identity and Connect credentials (expect failure)
+        id: action
+        uses: .
+        with:
+          unset-previous: "false"
+          export-env: "false"
+        env:
+          OP_WORKLOAD_ID: "some-workload-id"
+          OP_ENVIRONMENT_ID: "some-environment-id"
+          OP_INTEGRATION_KEY: "some-integration-key"
+          OP_CONNECT_HOST: "https://connect.example.com"
+          OP_CONNECT_TOKEN: "some-connect-token"
+        continue-on-error: true
+      - name: Assert action failed due to conflicting auth configuration
+        env:
+          OUTCOME: ${{ steps.action.outcome }}
+        run: |
+          echo "outcome: $OUTCOME"
+          if [ "$OUTCOME" != "failure" ]; then
+            echo "FAIL: expected action to fail due to conflicting auth config, but outcome was '$OUTCOME'"
+            exit 1
+          fi
+          echo "PASS: action correctly failed with conflicting authentication configuration"

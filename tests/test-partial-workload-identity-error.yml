@@ -1,0 +1,28 @@
+name: Test partial Workload Identity configuration error
+on:
+  workflow_dispatch:
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      - name: Run action with incomplete Workload Identity config (expect failure)
+        id: action
+        uses: .
+        with:
+          unset-previous: "false"
+          export-env: "false"
+        env:
+          OP_WORKLOAD_ID: "some-workload-id"
+          # OP_ENVIRONMENT_ID and OP_INTEGRATION_KEY intentionally omitted
+        continue-on-error: true
+      - name: Assert action failed due to incomplete Workload Identity config
+        env:
+          OUTCOME: ${{ steps.action.outcome }}
+        run: |
+          echo "outcome: $OUTCOME"
+          if [ "$OUTCOME" != "failure" ]; then
+            echo "FAIL: expected action to fail due to incomplete Workload Identity config, but outcome was '$OUTCOME'"
+            exit 1
+          fi
+          echo "PASS: action correctly failed with incomplete Workload Identity configuration"

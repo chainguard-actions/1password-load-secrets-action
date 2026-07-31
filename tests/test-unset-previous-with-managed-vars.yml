@@ -1,0 +1,32 @@
+name: Test unset-previous clears managed variables
+on:
+  workflow_dispatch:
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      - name: Set up simulated managed variables from a previous step
+        run: |
+          echo "OP_MANAGED_VARIABLES=MY_SECRET_VAR,ANOTHER_SECRET" >> "$GITHUB_ENV"
+          echo "MY_SECRET_VAR=super-secret-value" >> "$GITHUB_ENV"
+          echo "ANOTHER_SECRET=another-secret-value" >> "$GITHUB_ENV"
+      - name: Run action with unset-previous=true and no credentials
+        id: action
+        uses: .
+        with:
+          unset-previous: "true"
+          export-env: "false"
+      - name: Assert managed variables were unset
+        run: |
+          echo "MY_SECRET_VAR='${MY_SECRET_VAR}'"
+          echo "ANOTHER_SECRET='${ANOTHER_SECRET}'"
+          if [ -n "${MY_SECRET_VAR}" ]; then
+            echo "FAIL: MY_SECRET_VAR should have been unset but has value: '${MY_SECRET_VAR}'"
+            exit 1
+          fi
+          if [ -n "${ANOTHER_SECRET}" ]; then
+            echo "FAIL: ANOTHER_SECRET should have been unset but has value: '${ANOTHER_SECRET}'"
+            exit 1
+          fi
+          echo "PASS: managed variables were successfully unset"
