@@ -16,6 +16,7 @@ Hardened by [Chainguard](https://www.chainguard.dev) from the upstream action at
 | v4.1.1 | [`v4.1.1`](https://github.com/chainguard-actions/1password-load-secrets-action/tree/v4.1.1) | [`eb2efd0`](https://github.com/1password/load-secrets-action/commit/eb2efd0703da22a93c467f2d1ffbb6826c11e19c) |
 | v5.0.0 | [`v5.0.0`](https://github.com/chainguard-actions/1password-load-secrets-action/tree/v5.0.0) | [`e544b78`](https://github.com/1password/load-secrets-action/commit/e544b780808654ba8ceba5fb2fe2897103d92ff4) |
 | v5.0.0-beta.1 | [`v5.0.0-beta.1`](https://github.com/chainguard-actions/1password-load-secrets-action/tree/v5.0.0-beta.1) | [`120f516`](https://github.com/1password/load-secrets-action/commit/120f516e82224f94dae2bf31ac22f80ff70fc033) |
+| v5.0.1 | [`v5.0.1`](https://github.com/chainguard-actions/1password-load-secrets-action/tree/v5.0.1) | [`70062d7`](https://github.com/1password/load-secrets-action/commit/70062d7a876d3eb6334754fa26efd2fbd90c32f2) |
 
 ## Privacy
 
