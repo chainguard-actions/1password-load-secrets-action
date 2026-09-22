@@ -1,7 +1,0 @@
-{
-  "owner": "1password",
-  "name": "load-secrets-action",
-  "visibility": "public",
-  "description": "Make secrets from 1Password Connect available as environment variables in the next steps.",
-  "block_publish": false
-}
