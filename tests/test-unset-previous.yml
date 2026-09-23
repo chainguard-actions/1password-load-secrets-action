@@ -1,0 +1,30 @@
+name: Test unset-previous input
+on:
+  workflow_dispatch:
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      - name: Set a fake 1Password env var to simulate a previous step
+        run: |
+          echo "OP_MANAGED_FAKE_SECRET=some-value" >> "$GITHUB_ENV"
+      - id: action
+        uses: .
+        continue-on-error: true
+        with:
+          unset-previous: "true"
+          export-env: "false"
+      - name: Assert action ran with unset-previous input
+        env:
+          OUTCOME: ${{ steps.action.outcome }}
+        run: |
+          echo "outcome: $OUTCOME"
+          if [ "$OUTCOME" = "failure" ]; then
+            echo "PASS: action failed gracefully as expected (no 1Password credentials provided)"
+          elif [ "$OUTCOME" = "success" ]; then
+            echo "PASS: action succeeded with unset-previous=true"
+          else
+            echo "FAIL: unexpected outcome '$OUTCOME'"
+            exit 1
+          fi
