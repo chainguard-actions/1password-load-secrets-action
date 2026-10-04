@@ -10,7 +10,7 @@ Hardened by [Chainguard](https://www.chainguard.dev) from the upstream action at
 |---------|-----|-----------------|
 | v3.1.0 | [`v3.1.0`](https://github.com/chainguard-actions/1password-load-secrets-action/tree/v3.1.0) | [`8d0d610`](https://github.com/1password/load-secrets-action/commit/8d0d610af187e78a2772c2d18d627f4c52d3fbfb) |
 | v3.2.0 | [`v3.2.0`](https://github.com/chainguard-actions/1password-load-secrets-action/tree/v3.2.0) | — |
-| v3.2.1 | [`v3.2.1`](https://github.com/chainguard-actions/1password-load-secrets-action/tree/v3.2.1) | — |
+| v3.2.1 | [`v3.2.1`](https://github.com/chainguard-actions/1password-load-secrets-action/tree/v3.2.1) | [`dafbe7c`](https://github.com/1password/load-secrets-action/commit/dafbe7cb03502b260e2b2893c753c352eee545bf) |
 | v4.0.0 | [`v4.0.0`](https://github.com/chainguard-actions/1password-load-secrets-action/tree/v4.0.0) | [`92467eb`](https://github.com/1password/load-secrets-action/commit/92467eb28f72e8255933372f1e0707c567ce2259) |
 | v4.0.1 | [`v4.0.1`](https://github.com/chainguard-actions/1password-load-secrets-action/tree/v4.0.1) | [`3a12b0a`](https://github.com/1password/load-secrets-action/commit/3a12b0ab99d9cd590a3e9b5a90ea017210ed9556) |
 | v4.1.1 | [`v4.1.1`](https://github.com/chainguard-actions/1password-load-secrets-action/tree/v4.1.1) | [`eb2efd0`](https://github.com/1password/load-secrets-action/commit/eb2efd0703da22a93c467f2d1ffbb6826c11e19c) |
