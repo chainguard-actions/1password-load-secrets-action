@@ -1,0 +1,33 @@
+name: Test 1Password env var fallback
+on:
+  workflow_dispatch:
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    env:
+      OP_CONNECT_HOST: "https://connect-from-env.example.com"
+      OP_CONNECT_TOKEN: "token-from-env"
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+
+      - id: configure
+        uses: .
+        # No inputs provided — action should fall back to env vars
+
+      - name: Assert OP_CONNECT_HOST is preserved from env
+        run: |
+          echo "OP_CONNECT_HOST: $OP_CONNECT_HOST"
+          if [ "$OP_CONNECT_HOST" != "https://connect-from-env.example.com" ]; then
+            echo "FAIL: expected OP_CONNECT_HOST to be 'https://connect-from-env.example.com', got '$OP_CONNECT_HOST'"
+            exit 1
+          fi
+          echo "PASS: OP_CONNECT_HOST is set correctly from env fallback"
+
+      - name: Assert OP_CONNECT_TOKEN is preserved from env
+        run: |
+          echo "OP_CONNECT_TOKEN: $OP_CONNECT_TOKEN"
+          if [ "$OP_CONNECT_TOKEN" != "token-from-env" ]; then
+            echo "FAIL: expected OP_CONNECT_TOKEN to be 'token-from-env', got '$OP_CONNECT_TOKEN'"
+            exit 1
+          fi
+          echo "PASS: OP_CONNECT_TOKEN is set correctly from env fallback"

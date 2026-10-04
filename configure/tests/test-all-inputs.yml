@@ -1,0 +1,49 @@
+name: Test 1Password all inputs configured together
+on:
+  workflow_dispatch:
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+
+      - id: configure
+        uses: .
+        with:
+          connect-host: "https://connect.mycompany.com"
+          connect-token: "connect-token-abc123"
+          service-account-token: "ops_service-account-xyz789"
+
+      - name: Assert all three env vars are exported
+        run: |
+          echo "OP_CONNECT_HOST: $OP_CONNECT_HOST"
+          echo "OP_CONNECT_TOKEN: $OP_CONNECT_TOKEN"
+          echo "OP_SERVICE_ACCOUNT_TOKEN: $OP_SERVICE_ACCOUNT_TOKEN"
+
+          FAIL=0
+
+          if [ "$OP_CONNECT_HOST" != "https://connect.mycompany.com" ]; then
+            echo "FAIL: expected OP_CONNECT_HOST='https://connect.mycompany.com', got '$OP_CONNECT_HOST'"
+            FAIL=1
+          else
+            echo "PASS: OP_CONNECT_HOST is correct"
+          fi
+
+          if [ "$OP_CONNECT_TOKEN" != "connect-token-abc123" ]; then
+            echo "FAIL: expected OP_CONNECT_TOKEN='connect-token-abc123', got '$OP_CONNECT_TOKEN'"
+            FAIL=1
+          else
+            echo "PASS: OP_CONNECT_TOKEN is correct"
+          fi
+
+          if [ "$OP_SERVICE_ACCOUNT_TOKEN" != "ops_service-account-xyz789" ]; then
+            echo "FAIL: expected OP_SERVICE_ACCOUNT_TOKEN='ops_service-account-xyz789', got '$OP_SERVICE_ACCOUNT_TOKEN'"
+            FAIL=1
+          else
+            echo "PASS: OP_SERVICE_ACCOUNT_TOKEN is correct"
+          fi
+
+          if [ "$FAIL" = "1" ]; then
+            exit 1
+          fi
+          echo "PASS: all env vars exported correctly"
