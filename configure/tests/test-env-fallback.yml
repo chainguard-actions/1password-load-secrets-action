@@ -1,0 +1,38 @@
+name: Test environment variable fallback
+on:
+  workflow_dispatch:
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      - id: configure
+        uses: .
+        env:
+          OP_CONNECT_HOST: https://connect-from-env.example.com
+          OP_CONNECT_TOKEN: token_from_env_xyz789
+          OP_SERVICE_ACCOUNT_TOKEN: service_token_from_env_abc
+      - name: Assert OP_CONNECT_HOST is exported from env fallback
+        run: |
+          echo "OP_CONNECT_HOST: $OP_CONNECT_HOST"
+          if [ "$OP_CONNECT_HOST" != "https://connect-from-env.example.com" ]; then
+            echo "FAIL: expected OP_CONNECT_HOST to be 'https://connect-from-env.example.com', got '$OP_CONNECT_HOST'"
+            exit 1
+          fi
+          echo "PASS"
+      - name: Assert OP_CONNECT_TOKEN is exported from env fallback
+        run: |
+          echo "OP_CONNECT_TOKEN: $OP_CONNECT_TOKEN"
+          if [ "$OP_CONNECT_TOKEN" != "token_from_env_xyz789" ]; then
+            echo "FAIL: expected OP_CONNECT_TOKEN to be 'token_from_env_xyz789', got '$OP_CONNECT_TOKEN'"
+            exit 1
+          fi
+          echo "PASS"
+      - name: Assert OP_SERVICE_ACCOUNT_TOKEN is exported from env fallback
+        run: |
+          echo "OP_SERVICE_ACCOUNT_TOKEN: $OP_SERVICE_ACCOUNT_TOKEN"
+          if [ "$OP_SERVICE_ACCOUNT_TOKEN" != "service_token_from_env_abc" ]; then
+            echo "FAIL: expected OP_SERVICE_ACCOUNT_TOKEN to be 'service_token_from_env_abc', got '$OP_SERVICE_ACCOUNT_TOKEN'"
+            exit 1
+          fi
+          echo "PASS"

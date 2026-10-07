@@ -1,6 +1,6 @@
 <!-- markdownlint-disable -->
 
-# Hardening Report: 1Password--load-secrets-action/v5.0.0-beta.1
+# Hardening Report: 1Password--load-secrets-action--configure/v5.0.0-beta.1
 
 > This file was generated automatically by the hardening agent.
 
@@ -10,5 +10,5 @@
 
 **Harden Agent Version:** `2`
 
-Action **1Password--load-secrets-action/v5.0.0-beta.1** was hardened automatically. 0 finding(s) were identified and resolved across 0 iteration(s).
+Action **1Password--load-secrets-action--configure/v5.0.0-beta.1** was hardened automatically. 0 finding(s) were identified and resolved across 0 iteration(s).
 

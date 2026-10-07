@@ -1,0 +1,22 @@
+name: Test input overrides environment variable
+on:
+  workflow_dispatch:
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      - id: configure
+        uses: .
+        with:
+          service-account-token: token_from_input_override
+        env:
+          OP_SERVICE_ACCOUNT_TOKEN: token_from_env_should_be_overridden
+      - name: Assert input value takes precedence over env var
+        run: |
+          echo "OP_SERVICE_ACCOUNT_TOKEN: $OP_SERVICE_ACCOUNT_TOKEN"
+          if [ "$OP_SERVICE_ACCOUNT_TOKEN" != "token_from_input_override" ]; then
+            echo "FAIL: expected OP_SERVICE_ACCOUNT_TOKEN to be 'token_from_input_override' (input should override env), got '$OP_SERVICE_ACCOUNT_TOKEN'"
+            exit 1
+          fi
+          echo "PASS: input value correctly overrides env var"

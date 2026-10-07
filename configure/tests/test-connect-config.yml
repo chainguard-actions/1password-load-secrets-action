@@ -1,0 +1,36 @@
+name: Test 1Password Connect configuration
+on:
+  workflow_dispatch:
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      - id: configure
+        uses: .
+        with:
+          connect-host: https://connect.example.com
+          connect-token: test_connect_token_abc123
+      - name: Assert OP_CONNECT_HOST is exported
+        run: |
+          echo "OP_CONNECT_HOST: $OP_CONNECT_HOST"
+          if [ "$OP_CONNECT_HOST" != "https://connect.example.com" ]; then
+            echo "FAIL: expected OP_CONNECT_HOST to be 'https://connect.example.com', got '$OP_CONNECT_HOST'"
+            exit 1
+          fi
+          echo "PASS"
+      - name: Assert OP_CONNECT_TOKEN is exported
+        run: |
+          echo "OP_CONNECT_TOKEN: $OP_CONNECT_TOKEN"
+          if [ "$OP_CONNECT_TOKEN" != "test_connect_token_abc123" ]; then
+            echo "FAIL: expected OP_CONNECT_TOKEN to be 'test_connect_token_abc123', got '$OP_CONNECT_TOKEN'"
+            exit 1
+          fi
+          echo "PASS"
+      - name: Assert service account token is not set
+        run: |
+          if [ -n "$OP_SERVICE_ACCOUNT_TOKEN" ]; then
+            echo "FAIL: expected OP_SERVICE_ACCOUNT_TOKEN to be unset, got '$OP_SERVICE_ACCOUNT_TOKEN'"
+            exit 1
+          fi
+          echo "PASS: service account token is not set"
