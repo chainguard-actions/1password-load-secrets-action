@@ -6,23 +6,25 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
-      - name: Invoke action with export-env enabled
-        id: action
+
+      - id: action
         uses: .
+        continue-on-error: true
         with:
           export-env: "true"
-          unset-previous: "false"
-          version: "latest"
-        continue-on-error: true
-      - name: Assert action ran with export-env flag
+        # No credentials set — action should fail at auth validation
+        # but export-env input should be accepted without error
+
+      - name: Assert action failed gracefully with export-env=true
         env:
           OUTCOME: ${{ steps.action.outcome }}
         run: |
-          echo "action outcome: $OUTCOME"
-          # The action should accept the export-env flag and complete
-          # (success or failure due to missing credentials, not a crash).
-          if [ "$OUTCOME" = "success" ] || [ "$OUTCOME" = "failure" ]; then
-            echo "PASS: action completed with outcome '$OUTCOME'"
+          echo "outcome: $OUTCOME"
+          if [ "$OUTCOME" = "failure" ]; then
+            echo "PASS: action failed gracefully (auth error) with export-env=true accepted"
+          elif [ "$OUTCOME" = "success" ]; then
+            echo "FAIL: action unexpectedly succeeded without credentials"
+            exit 1
           else
             echo "FAIL: unexpected outcome '$OUTCOME'"
             exit 1

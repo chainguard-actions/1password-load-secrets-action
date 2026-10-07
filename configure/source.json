@@ -2,6 +2,7 @@
   "owner": "1Password",
   "repo": "load-secrets-action",
   "version": "v4.0.1",
+  "path": "configure",
   "commit_sha": "3a12b0ab99d9cd590a3e9b5a90ea017210ed9556",
   "url": "https://github.com/1Password/load-secrets-action",
   "policy_sha": "d636be7e43ef829af6e853da6b3c7566db9f72fe",
