@@ -1,0 +1,17 @@
+{
+  "owner": "1Password",
+  "repo": "load-secrets-action",
+  "version": "v4.1.1",
+  "path": "configure",
+  "commit_sha": "eb2efd0703da22a93c467f2d1ffbb6826c11e19c",
+  "url": "https://github.com/1Password/load-secrets-action",
+  "policy_sha": "374911c4be584df24e6da57af2d990570ef0f859",
+  "test_policy_sha": "843adf9e4b8f85d0c08b27b9d0b09dd094b54702",
+  "test_agent_version": "2",
+  "harden_agent_version": "2",
+  "dist_artifact": {
+    "gcs_uri": "gs://patch-actions-node-artifacts/dist-artifacts/1Password/load-secrets-action/v4.1.1/sha256-30535574fdfc49817d541c2714f9b4def8f78f0df45bc556b864246d3610406b.tar.gz",
+    "sha256": "30535574fdfc49817d541c2714f9b4def8f78f0df45bc556b864246d3610406b",
+    "size_bytes": 260324
+  }
+}
